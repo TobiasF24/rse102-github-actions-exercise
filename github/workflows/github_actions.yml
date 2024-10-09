@@ -1,0 +1,8 @@
+jobs:
+    first_job:
+        - name: style_check
+          run: python -m black ./../..
+    second_job:
+        - name: test
+    third_job:
+        - name: coverage_report
