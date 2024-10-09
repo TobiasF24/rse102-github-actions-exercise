@@ -1,8 +1,34 @@
+name: github_actions
+
+on: [push]
+
 jobs:
-    first_job:
-        - name: style_check
-          run: python -m black ./../..
-    second_job:
-        - name: test
-    third_job:
-        - name: coverage_report
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
+      - name: "Install style checker"
+        run: pip install black
+      - name: "Run style check"
+        run: black --check .
+  build:
+    needs: style
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: "Automation Lecture"
+    steps:
+      - name: "Run build phase"
+        run: echo "Building project $PROJECT_NAME"
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
+      - name: "style_check"
+        run: python -m black
